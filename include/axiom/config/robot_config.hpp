@@ -22,8 +22,9 @@ struct Ports {
 struct Geometry {
     double wheel_diameter_in{3.25};
     double track_width_in{12.0};
-    double gear_ratio{1.0}; // motor rotations per wheel rotation
+    double gear_ratio{1.0}; // motor rotations per wheel rotation; LemLib receives wheel RPM
     int motor_rpm{600};
+    double horizontal_drift{2.0}; // LemLib turn compensation: 2 omni / 8 traction-wheel starting point
 };
 
 struct DriverFeel {
@@ -32,8 +33,9 @@ struct DriverFeel {
 };
 
 struct MotionGains {
-    double drive_kp{0.8}, drive_kd{0.02};
-    double turn_kp{1.8}, turn_kd{0.05};
+    // LemLib units: lateral gains per inch, angular gains per degree.
+    double drive_kp{10.0}, drive_kd{3.0};
+    double turn_kp{2.0}, turn_kd{10.0};
 };
 
 struct RobotConfig {
