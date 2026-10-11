@@ -10,7 +10,8 @@ namespace axiom::app{
     enum class AutonId {
         AwpSafe,
         PinsToggle,
-        Skills
+        Skills,
+        PoseDemo
     };
     struct Pose { double x{0}; double y{0}; double heading{0}; };
     struct Snapshot {

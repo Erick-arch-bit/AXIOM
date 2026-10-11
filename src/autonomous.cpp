@@ -28,10 +28,18 @@ void skills() {
     r.drive.turn(-90);
     r.drive.stop();
 }
+void pose_demo() {
+    auto& r = robot::instance();
+    r.drive.set_pose(0, 0, 0);
+    r.drive.move_to_point(24, 0);
+    r.drive.move_to_pose(24, 24, 90);
+    r.drive.stop();
+}
 const AutonEntry routines[] = {
     {app::AutonId::AwpSafe, "AWP Safe", "Short, conservative example", awp_safe},
     {app::AutonId::PinsToggle, "Pins Toggle", "Intake and drive example", pins_toggle},
     {app::AutonId::Skills, "Skills", "Basic multi-move example", skills},
+    {app::AutonId::PoseDemo, "Pose Demo", "Point and pose motion example", pose_demo},
 };
 }
 const AutonEntry* entries() { return routines; }

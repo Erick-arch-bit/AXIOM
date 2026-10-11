@@ -23,14 +23,31 @@ Those depot commands apply its current stable release; AXIOM's checked-in depend
 
 The driver map is in `src/driver.cpp`: left stick Y and right stick X drive arcade; R1/R2 run the intake forward/reverse; L1/L2 move the elevator up/down. Joystick deadzone and expo are configurable in the same robot config header.
 
+AXIOM owns driver feel: it applies the configured deadzone and expo in `driver.cpp`, then calls LemLib arcade with its input curve disabled. This keeps each stick value shaped once. There is no tank-mode configuration yet.
+
 ## Add a mechanism in 3 steps
 
 1. Add its smart-port/ADI entries to `Ports` in `robot_config.hpp`.
 2. Add a small game-named subsystem in `include/axiom/subsystems/` using a helper from `include/axiom/control/motors.hpp`.
 3. Add the subsystem as a public member of `Robot`, construct it from the configured ports, and bind its controls in `src/driver.cpp` (then use it in autons if needed).
 
-The included autonomous routines are intentionally short examples. Tune their distances and turns for your robot and field strategy before competition. LemLib handles drive and turn control using drivetrain motor encoders and the IMU; tune wheel diameter, external gear ratio, motor RPM, and gains for your build. IMU calibration has a five-second timeout and reports failure in the snapshot and UI.
+The included autonomous routines are intentionally short examples. `AWP Safe`, `Pins Toggle`, and `Skills` show relative `forward(inches)` and `turn(degrees)` calls. `Pose Demo` shows pose control:
+
+```cpp
+r.drive.set_pose(0, 0, 0);
+r.drive.move_to_point(24, 0);
+r.drive.move_to_pose(24, 24, 90);
+r.drive.stop();
+```
+
+The pose frame uses inches, with heading in degrees, zero pointing along +Y, and positive heading clockwise. Measure wheel diameter and track width on the robot, then tune `drive_kp`, `drive_kd`, `turn_kp`, and `turn_kd`; `horizontal_drift` starts at about 2 for omni wheels and 8 for traction wheels. LemLib odometry currently uses drive motor encoders and the IMU, so wheel slip affects position. IMU calibration has a five-second timeout; failure is shown as **IMU CALIBRATION FAILED** and motion calls safely do nothing.
+
+The selected routine is saved to `/usd/axiom_auton.txt` when an SD card is available. If the card or file is missing, AXIOM keeps the default routine and continues normally.
 
 ## Current scope
 
-AXIOM currently provides a six-motor tank base, LemLib-backed distance/heading motion and odometry, driver arcade control, an LVGL auton selector, and live battery/temperature/IMU/elevator diagnostics. `Drive` also exposes `set_pose`, `get_pose`, `move_to_point`, and `move_to_pose`. Path-file pure pursuit, tracking-wheel setup, selected-auton SD persistence, and live tuning remain future work. Motion accuracy still depends on measuring geometry and tuning gains for the robot.
+AXIOM currently provides a six-motor tank base, LemLib-backed distance/heading motion and motor-encoder odometry, driver arcade control, an LVGL auton selector with optional SD persistence, and live battery/temperature/IMU/elevator/pose diagnostics. Passive tracking-wheel odometry, path-file pure pursuit, holonomic drive, and live tuning are outside the current template. Motion accuracy depends on measured geometry, tuned gains, and limiting wheel slip.
+
+## Credits
+
+AXIOM uses [PROS](https://pros.cs.purdue.edu/), [LemLib 0.5.6](https://lemlib.readthedocs.io/en/stable/), and the bundled [LVGL](https://lvgl.io/) user interface library.
