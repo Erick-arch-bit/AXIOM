@@ -14,7 +14,7 @@ namespace axiom::subsystems {
     };
     class Elevator {
         public:
-            Elevator(int left_port, int right_port, char bottom_port, char top_prt);
+            Elevator(int left_port, int right_port, char bottom_port, char top_port);
             void manual(int power);
             void to_low();
             void to_high();

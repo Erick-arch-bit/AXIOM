@@ -12,10 +12,12 @@ namespace axiom::robot {
             void initialize();
             void update();
             app::Snapshot snapshot() const;
+            void disabled();
             Drive drive;
             subsystems::Intake intake;
             subsystems::Elevator elevator;
         private:
             config::RobotConfig config_;
     };
+    Robot& instance();
 }

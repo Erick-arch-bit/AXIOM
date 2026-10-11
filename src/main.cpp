@@ -7,4 +7,4 @@ void initialize(){ auto& r=axiom::robot::instance(); r.initialize(); axiom::ui::
 void competition_initialize(){ axiom::ui::init(); }
 void autonomous(){ axiom::auton::run_selected(); }
 void opcontrol(){ axiom::driver::run(); }
-void disabled(){ axiom::robot::instance().drive.stop(pros::E_MOTOR_BRAKE_BRAKE); axiom::robot::instance().intake.stop(); axiom::robot::instance().elevator.stop(); }
+void disabled(){ axiom::robot::instance().disabled(); }
