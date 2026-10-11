@@ -1,32 +1,14 @@
 #pragma once
-#include "pros/motors.hpp"
-#include "pros/adi.hpp"
+#include "axiom/control/motors.hpp"
 
 namespace axiom::subsystems {
-    enum class ElevatorState {
-        Unknown,
-        Homing,
-        Bottom,
-        Manual,
-        GoalLow,
-        GoalHigh,
-        Fault
-    };
-    class Elevator {
-        public:
-            Elevator(int left_port, int right_port, char bottom_port, char top_port);
-            void manual(int power);
-            void to_low();
-            void to_high();
-            void home();
-            void stop();
-            void update();
-            bool homed() const { return homed_;}
-            ElevatorState state() const { return state_;}
-        private:
-            pros::Motor left_, right_;
-            pros::DigitalIn bottom_, top_;
-            bool homed_{false};
-            ElevatorState state_{ElevatorState::Unknown};
-    };
+class Elevator : public control::MotorWithLimits {
+public:
+    Elevator(int left, int right, char bottom, char top)
+        : MotorWithLimits(left, right, bottom, top) {}
+    void up(int power = 90) { manual(power); }
+    void down(int power = -60) { manual(power); }
+    void to_high() { to_top(); }
+    void to_low() { to_bottom(); }
+};
 }

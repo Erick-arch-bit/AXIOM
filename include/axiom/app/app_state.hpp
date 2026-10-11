@@ -16,6 +16,7 @@ namespace axiom::app{
     struct Snapshot {
         Mode mode{Mode::Boot};
         bool imu_ready{false};
+        bool imu_calibration_failed{false};
         bool elevator_homed{false};
         double battery{0};
         double left_temp{0};

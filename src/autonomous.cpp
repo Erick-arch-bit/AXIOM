@@ -6,16 +6,27 @@ namespace axiom::auton {
 namespace {
 void awp_safe() {
     auto& r = robot::instance();
-    r.drive.forward(18); r.intake.collect(100); pros::delay(400); r.intake.stop();
-    r.drive.turn(45); r.drive.forward(12); r.drive.stop();
+    r.drive.forward(18);
+    r.intake.collect_for(400, 100);
+    r.drive.turn(45);
+    r.elevator.to_high();
+    r.drive.forward(12);
+    r.intake.release_for(300);
+    r.elevator.to_low();
 }
 void pins_toggle() {
     auto& r = robot::instance();
-    r.drive.forward(16); r.intake.collect(100); pros::delay(350); r.intake.stop(); r.drive.stop();
+    r.drive.forward(16);
+    r.intake.collect_for(350, 100);
+    r.drive.stop();
 }
 void skills() {
     auto& r = robot::instance();
-    r.drive.forward(24); r.drive.turn(90); r.drive.forward(24); r.drive.turn(-90); r.drive.stop();
+    r.drive.forward(24);
+    r.drive.turn(90);
+    r.drive.forward(24);
+    r.drive.turn(-90);
+    r.drive.stop();
 }
 const AutonEntry routines[] = {
     {app::AutonId::AwpSafe, "AWP Safe", "Short, conservative example", awp_safe},

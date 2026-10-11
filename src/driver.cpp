@@ -9,10 +9,10 @@ namespace axiom::driver {
 namespace {
 pros::Controller master(pros::E_CONTROLLER_MASTER);
 int shape(int value) {
-    const auto& cfg = config::CURRENT.drive;
-    if (std::abs(value) <= cfg.joystick_deadzone) return 0;
+    const auto& cfg = config::CURRENT.driver;
+    if (std::abs(value) <= cfg.deadzone) return 0;
     const double normalized = static_cast<double>(value) / 127.0;
-    const double expo = std::max(0.0, std::min(1.0, cfg.joystick_expo));
+    const double expo = std::max(0.0, std::min(1.0, cfg.expo));
     const double shaped = normalized * (1.0 - expo) + normalized * normalized * normalized * expo;
     return static_cast<int>(shaped * 127.0);
 }
